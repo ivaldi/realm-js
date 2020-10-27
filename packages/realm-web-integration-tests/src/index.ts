@@ -39,6 +39,7 @@ if (location.pathname.endsWith("-callback")) {
             require("./api-key-auth.test");
             require("./email-password-auth.test");
             require("./iife.test");
+            require("./bson.test");
         },
     });
 }
