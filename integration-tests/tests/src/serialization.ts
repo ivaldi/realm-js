@@ -34,7 +34,6 @@ import {
 } from "./schemas/person-and-dog-with-object-ids";
 import * as circularCollectionResult from "./structures/circular-collection-result.json";
 import * as circularCollectionResultWithIds from "./structures/circular-collection-result-with-object-ids.json";
-import { ObjectId } from "bson";
 
 describe("JSON serialization (exposed properties)", () => {
     it("JsonSerializationReplacer is exposed on the Realm constructor", () => {
@@ -139,7 +138,7 @@ const testSetups: TestSetup[] = [
                 const john = realm.create<IPersonWithId>(
                     PersonSchemaWithId.name,
                     {
-                        _id: new ObjectId("5f086d00ddf69c48082eb63b"),
+                        _id: new Realm.BSON.ObjectId("5f086d00ddf69c48082eb63b"),
                         name: "John Doe",
                         age: 42,
                     }
@@ -147,7 +146,7 @@ const testSetups: TestSetup[] = [
                 const jane = realm.create<IPersonWithId>(
                     PersonSchemaWithId.name,
                     {
-                        _id: new ObjectId("5f086d00ddf69c48082eb63d"),
+                        _id: new Realm.BSON.ObjectId("5f086d00ddf69c48082eb63d"),
                         name: "Jane Doe",
                         age: 40,
                     }
@@ -155,7 +154,7 @@ const testSetups: TestSetup[] = [
                 const tony = realm.create<IPersonWithId>(
                     PersonSchemaWithId.name,
                     {
-                        _id: new ObjectId("5f086d00ddf69c48082eb63f"),
+                        _id: new Realm.BSON.ObjectId("5f086d00ddf69c48082eb63f"),
                         name: "Tony Doe",
                         age: 35,
                     }
@@ -188,17 +187,17 @@ const testSetups: TestSetup[] = [
 
             realm.write(() => {
                 const john = realm.create(PersonWithId, {
-                    _id: new ObjectId("5f086d00ddf69c48082eb63b"),
+                    _id: new Realm.BSON.ObjectId("5f086d00ddf69c48082eb63b"),
                     name: "John Doe",
                     age: 42,
                 });
                 const jane = realm.create(PersonWithId, {
-                    _id: new ObjectId("5f086d00ddf69c48082eb63d"),
+                    _id: new Realm.BSON.ObjectId("5f086d00ddf69c48082eb63d"),
                     name: "Jane Doe",
                     age: 40,
                 });
                 const tony = realm.create(PersonWithId, {
-                    _id: new ObjectId("5f086d00ddf69c48082eb63f"),
+                    _id: new Realm.BSON.ObjectId("5f086d00ddf69c48082eb63f"),
                     name: "Tony Doe",
                     age: 35,
                 });

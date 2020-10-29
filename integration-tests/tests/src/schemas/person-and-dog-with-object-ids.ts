@@ -16,8 +16,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-import * as Realm from "realm";
-import { ObjectId } from 'bson'
+import Realm from "realm";
+import { ObjectId } from "bson";
 
 export interface IPerson {
     _id: ObjectId;
