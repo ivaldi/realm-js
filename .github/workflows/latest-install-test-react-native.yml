@@ -1,0 +1,64 @@
+# This workflow installs
+# - the latest Realm JS,
+# - with latest Node.js & NPM into
+# - a newly initialized React Native app (running the latest version of React Native)
+
+name: Latest install test (React Native)
+
+on:
+  # Every Monday at 9:00 CET
+  schedule:
+    - cron: "0 8 * * 1"
+  # You can also activate this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  install:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 'latest'
+      - name: Initialize a React Native app
+        run: npx react-native init ReactNativeTestApp --directory react-native-test-app --npm
+      - name: Install Realm JS
+        working-directory: react-native-test-app
+        run: npm install realm
+      - name: Install CocoaPods
+        working-directory: react-native-test-app/ios
+        run: pod install
+      - name: Make the app load Realm
+        working-directory: react-native-test-app
+        run: |
+          cat > App.js <<EOL
+            import React, {useEffect} from 'react';
+            import {Text} from 'react-native';
+            import Realm from 'realm';
+            const schema = [{name: 'Person', properties: {name: 'string'}}];
+            const App = () => {
+              useEffect(() => {
+                const realm = new Realm({schema});
+                if (realm.empty) {
+                  realm.write(() => {
+                    realm.create('Person', {name: 'Alice'});
+                    realm.create('Person', {name: 'Bob'});
+                    realm.create('Person', {name: 'Charlie'});
+                  });
+                }
+                console.log(
+                  'Persons are',
+                  realm
+                    .objects('Person')
+                    .map((p) => p.name)
+                    .join(', '),
+                );
+                return () => realm.close();
+              }, []);
+              return <Text>App rendered!</Text>;
+            };
+            export default App;
+
+          EOL
+      - name: Start the app
+        working-directory: react-native-test-app
+        run: npm run ios
